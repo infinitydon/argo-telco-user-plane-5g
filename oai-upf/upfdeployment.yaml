@@ -4,7 +4,7 @@ metadata: # kpt-merge: oai-edge/upf-edge
   name: upf-edge
   namespace: oai-edge
   annotations:
-    internal.kpt.dev/upstream-identifier: 'workload.nephio.org|NFDeployment|oai-edge|upf-edge'
+    internal.kpt.dev/upstream-identifier: workload.nephio.org|NFDeployment|oai-edge|upf-edge
 spec:
   provider: upf.openairinterface.org
   capacity:
@@ -17,18 +17,18 @@ spec:
   interfaces:
   - name: n3
     ipv4:
-      address: UPF_N3_IP
-      gateway: UPF_N3_GW
+      address: 10.2.3.16/24
+      gateway: 10.2.3.1
     vlanID: 30
   - name: n4
     ipv4:
-      address: UPF_N4_IP
-      gateway: UPF_N4_GW
+      address: 10.2.4.16/24
+      gateway: 10.2.4.1
     vlanID: 31
   - name: n6
     ipv4:
-      address: UPF_N6_IP
-      gateway: UPF_N6_GW
+      address: 10.2.5.16/24
+      gateway: 10.2.5.1
     vlanID: 422
   networkInstances:
   - name: vpc-internal
