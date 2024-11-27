@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: # kpt-merge: argocd/APP_NAME
+  name: free5gc-upf-1 # kpt-set: ${argocd-app-name}
+  namespace: argocd
+  annotations:
+    internal.kpt.dev/upstream-identifier: 'argoproj.io|Application|argocd|APP_NAME'
+spec:
+  project: default
+  source:
+    chart: free5gc-upf
+    repoURL: ghcr.io/infinitydon
+    targetRevision: 0.0.1 # kpt-set: ${helm-chart-version}
+    helm:
+      releaseName: core5g-upf1 # kpt-set: ${helm-release-name}
+      valuesObject:
+        dnn: internet # kpt-set: ${dnn}
+        ueIPpool: 10.63.0.0/16 # kpt-set: ${ue-ip-pool}
+        gnb:
+          N3subnetCIDR: 10.0.6.0/24 # kpt-set: ${gnb-n3-subnet-cidr}
+        smf:
+          N4subnetCIDR: 10.1.4.0/24 # kpt-set: ${smf-n4-subnet-cidr}
+        upf:
+          n3:
+            multusIP: 10.2.3.16 # kpt-set: ${upf-multus-n3-ip}
+            multusNetworkMask: 24 # kpt-set: ${upf-n3-netmask}
+            routeGw: 10.2.3.1 # kpt-set: ${upf-n3-route-gw}
+          n4:
+            multusIP: 10.2.4.16 # kpt-set: ${upf-multus-n4-ip}
+            multusNetworkMask: 24 # kpt-set: ${upf-n4-netmask}
+            routeGw: 10.2.4.1 # kpt-set: ${upf-n4-route-gw}
+          n6:
+            multusIP: 10.2.5.16 # kpt-set: ${upf-multus-n6-ip}
+            multusNetworkMask: 24 # kpt-set: ${upf-n6-netmask}
+        multus:
+          n3dev: eth1 # kpt-set: ${multus-n3-dev}
+          n4dev: eth2 # kpt-set: ${multus-n4-dev}
+          n6dev: eth3 # kpt-set: ${multus-n6-dev}
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: telco
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: true
+    syncOptions:
+    - CreateNamespace=true
+    - Replace=true
+    - ServerSideApply=true,Validate=false
