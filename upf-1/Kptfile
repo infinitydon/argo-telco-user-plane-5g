@@ -20,3 +20,26 @@ upstreamLock:
     commit: 0fefd5c22142199b276be4e93579f89bb500fec0
 info:
   description: this package is used to create free5gc UPF helm
+pipeline:
+  mutators:
+  - name: PackageVariant.free5gc-upf-1..0
+    image: gcr.io/kpt-fn/apply-setters:v0.2.0
+    configMap:
+      argocd-app-name: free5gc-upf-1
+      dnn: internet
+      gnb-n3-subnet-cidr: 10.0.6.0/24
+      helm-chart-version: 0.0.1
+      helm-release-name: core5g-upf1
+      multus-n3-dev: eth1
+      multus-n4-dev: eth2
+      multus-n6-dev: eth3
+      smf-n4-subnet-cidr: 10.1.4.0/24
+      ue-ip-pool: 10.63.0.0/16
+      upf-multus-n3-ip: 10.2.3.16
+      upf-multus-n4-ip: 10.2.4.16
+      upf-multus-n6-ip: 10.2.5.16
+      upf-n3-netmask: "24"
+      upf-n3-route-gw: 10.2.3.1
+      upf-n4-netmask: "24"
+      upf-n4-route-gw: 10.2.4.1
+      upf-n6-netmask: "24"
